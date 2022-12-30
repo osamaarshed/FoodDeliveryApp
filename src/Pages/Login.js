@@ -1,0 +1,95 @@
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import axios from "axios";
+
+const Login = () => {
+  const [input, setInput] = useState({
+    loginemail: "",
+    loginpassword: "",
+  });
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    console.log(name, value);
+    setInput((values) => ({ ...values, [name]: value }));
+  };
+  const handleSubmit = () => {
+    axios({
+      method: "post",
+      url: "http://localhost:8080/login",
+      data: {
+        loginemail: "Fred",
+        loginpassword: "Flintstone",
+      },
+    });
+  };
+  return (
+    <>
+      <div className="container d-flex justify-content-center">
+        <div className="border px-5 mt-5">
+          <div>
+            <NavLink to="/login/test">
+              <button className="btn-danger">Test</button>
+            </NavLink>
+            <form className="mb-5" onSubmit={handleSubmit}>
+              <h2 className="text-center my-5">Login</h2>
+              <div className="form-group">
+                <label>Email address</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter email"
+                  name="loginemail"
+                  value={input.loginemail}
+                  onChange={handleChange}
+                />
+                <small id="emailHelp" className="form-text text-muted">
+                  We'll never share your email with anyone else.
+                </small>
+              </div>
+              <div className="form-group mt-3">
+                <label>Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="exampleInputPassword1"
+                  placeholder="Password"
+                  name="loginpassword"
+                  value={input.loginpassword}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="row">
+                <div className="col-6 form-check mt-3">
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="exampleCheck1"
+                  />
+                  <label className="form-check-label">Remember Password</label>
+                </div>
+                <div className="col-6 mt-3">
+                  <a href="/">Forgot Password?</a>
+                </div>
+              </div>
+              <div className="text-center mt-3">
+                <NavLink to="/signup">
+                  <a href="/">Register</a>
+                </NavLink>
+              </div>
+              <div className="d-flex justify-content-center mt-3">
+                <button type="submit" className="btn btn-danger">
+                  Login
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Login;
