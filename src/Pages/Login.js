@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
-  // const url = "http://localhost:8080/login";
   const [input, setInput] = useState({
     loginemail: "",
     loginpassword: "",
@@ -20,7 +19,7 @@ const Login = () => {
       loginpassword: input.loginpassword,
     };
     e.preventDefault();
-    axios
+    await axios
       .post("http://localhost:8080/login", payload)
       .then((res) => {
         console.log(res);
@@ -28,6 +27,7 @@ const Login = () => {
       .catch((err) => {
         console.log(err);
       });
+
     // let res = await axios.post("http://localhost:8080/login", payload);
     // let data = res.data;
     // console.log(input, "this is data");

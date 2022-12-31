@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+
 const Signup = () => {
   const [credentials, setCredentials] = useState({
     signupemail: "",
@@ -13,13 +15,29 @@ const Signup = () => {
 
     setCredentials((values) => ({ ...values, [name]: value }));
   };
+  const handleSubmit = async (e) => {
+    const payload = {
+      signupemail: credentials.signupemail,
+      signuppassword: credentials.signuppassword,
+      signupconfirmpassword: credentials.signupconfirmpassword,
+    };
+    e.preventDefault();
+    await axios
+      .post("http://localhost:8080/signup", payload)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div>
       <div className="container d-flex justify-content-center">
         <div className="border px-5 mt-5">
           <div>
-            <form className="mb-5">
+            <form className="mb-5" onSubmit={handleSubmit}>
               <h2 className="text-center my-5">Signup</h2>
               <div className="form-group">
                 <label>Email address:</label>
