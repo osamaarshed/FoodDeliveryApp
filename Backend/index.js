@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
 // import model from "./Models/UserModel";
 mongoose.set("strictQuery", false);
 
@@ -68,7 +69,11 @@ app.post("/signup", async (req, res) => {
     });
     res.status(200).send("Registered Successfully!");
   } catch (error) {
-    res.status(400).send("Duplicate Email!");
+    res.status(409).send({
+      status: "not ok",
+      statusCode: 400,
+      message: "Duplicate Email!",
+    });
     console.log(error);
   }
 });
@@ -81,10 +86,18 @@ app.post("/login", async (req, res) => {
     signupemail: req.body.loginemail,
     signuppassword: req.body.loginpassword,
   });
+
   if (user) {
-    res.status(200).send("User Found");
+    const token = jwt.sign(
+      {
+        signupemail: req.body.loginemail,
+        signuppassword: req.body.loginpassword,
+      },
+      "secret123"
+    );
+    res.status(200).send({ status: "ok", user: token, message: "User Found" });
   } else {
-    res.status(404).send("User not Found");
+    res.send({ user: false, message: "User Not Found" });
   }
   // res.send("asd");
 });

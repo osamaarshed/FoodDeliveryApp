@@ -7,10 +7,11 @@ const Login = () => {
     loginemail: "",
     loginpassword: "",
   });
+  const [response, setResponse] = useState();
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name, value);
+    // console.log(name, value);
     setInput((values) => ({ ...values, [name]: value }));
   };
   const handleSubmit = async (e) => {
@@ -22,11 +23,20 @@ const Login = () => {
     await axios
       .post("http://localhost:8080/login", payload)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        setResponse(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
+    // console.log(response.user);
+
+    if (response.user) {
+      alert("Login successful");
+      window.location.href = "/AdminDashboard";
+    } else {
+      alert("Login failed");
+    }
 
     // let res = await axios.post("http://localhost:8080/login", payload);
     // let data = res.data;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Signup = () => {
@@ -8,10 +8,13 @@ const Signup = () => {
     signuppassword: "",
     signupconfirmpassword: "",
   });
+  const [response, setResponse] = useState();
+
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name, value);
+    // console.log(name, value);
 
     setCredentials((values) => ({ ...values, [name]: value }));
   };
@@ -25,11 +28,16 @@ const Signup = () => {
     await axios
       .post("http://localhost:8080/signup", payload)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        setResponse(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
+
+    if (response === "Registered Successfully!") {
+      navigate("/login");
+    }
   };
 
   return (
