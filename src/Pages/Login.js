@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
+// import jwt from "jsonwebtoken"
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -31,7 +32,7 @@ const Login = () => {
       });
     // console.log(response.user);
 
-    if (response.user) {
+    if (response.message === "User Found") {
       alert("Login successful");
       window.location.href = "/AdminDashboard";
     } else {
@@ -49,9 +50,6 @@ const Login = () => {
       <div className="container d-flex justify-content-center">
         <div className="border px-5 mt-5">
           <div>
-            <NavLink to="/login/test">
-              <button className="btn-danger">Test</button>
-            </NavLink>
             <form className="mb-5" onSubmit={handleSubmit}>
               <h2 className="text-center my-5">Login</h2>
               <div className="form-group">

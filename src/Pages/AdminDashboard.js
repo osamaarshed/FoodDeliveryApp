@@ -1,26 +1,12 @@
-import React, { useEffect } from "react";
-import jwt from "jsonwebtoken";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import Navbar from "../Components/Navbar/Navbar";
 
 const AdminDashboard = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      const user = jwt.decode(token);
-      console.log(user);
-      if (!user) {
-        localStorage.removeItem("token");
-        navigate("/login");
-      } else {
-        alert("Populated");
-      }
-    }
-  }, []);
-
-  return <div>AdminDashboard</div>;
+  return (
+    <>
+      <Navbar />
+    </>
+  );
 };
 
 export default AdminDashboard;
