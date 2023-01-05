@@ -88,11 +88,11 @@ const Menu = () => {
             />
           </div>
 
-          <div class="form-group">
+          <div className="form-group">
             <label for="e">Example file input</label> <br />
             <input
               type="file"
-              class="form-control-file"
+              className="form-control-file"
               id="exampleFormControlFile1"
               name="inputfile"
               value={input.inputfile}

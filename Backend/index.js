@@ -150,6 +150,18 @@ app.get("/AdminDashboard/MenuList", async (req, res) => {
   }
 });
 
+// Delete MenuList
+app.delete("/AdminDashboard/MenuList:_id", async (req, res) => {
+  try {
+    const menu = await MenuModel.deleteOne(req.params);
+    res.status(200).send(menu);
+  } catch (error) {
+    res.status(409).send({
+      status: "not deleted",
+    });
+  }
+});
+
 function verifyToken(req, res, next) {}
 app.listen(8080, () => {
   console.log("The server is running on port 8080");
