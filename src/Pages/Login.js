@@ -8,7 +8,7 @@ const Login = () => {
     loginemail: "",
     loginpassword: "",
   });
-  const [response, setResponse] = useState();
+  const [response, setResponse] = useState("");
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -24,20 +24,23 @@ const Login = () => {
     await axios
       .post("http://localhost:8080/login", payload)
       .then((res) => {
-        console.log(res.data);
         setResponse(res.data);
+        // console.log(res.data.user);
+        // console.log(res.data);
+        if (res.data.user) {
+          alert("Login successful");
+          window.location.href = "/AdminDashboard";
+        } else {
+          alert("Login failed");
+        }
+
+        // console.log(response.status);
       })
       .catch((err) => {
         console.log(err);
       });
-    // console.log(response.user);
 
-    if (response.message === "User Found") {
-      alert("Login successful");
-      window.location.href = "/AdminDashboard";
-    } else {
-      alert("Login failed");
-    }
+    // console.log(response.user);
 
     // let res = await axios.post("http://localhost:8080/login", payload);
     // let data = res.data;

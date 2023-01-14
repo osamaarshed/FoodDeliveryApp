@@ -7,9 +7,11 @@ const Navbar = () => {
     <div className="container-fluid px-5 bg-light">
       <div className="contaier">
         <nav className="navbar navbar-expand-lg navbar-light">
-          <a className="navbar-brand" href="/">
-            Admin Panel
-          </a>
+          <NavLink to="/AdminDashboard">
+            <a className="navbar-brand" href="/">
+              Admin Panel
+            </a>
+          </NavLink>
           <button
             className="navbar-toggler"
             type="button"
@@ -28,23 +30,23 @@ const Navbar = () => {
           >
             <ul className="navbar-nav mr-auto">
               <li className="nav-item active">
-                <a className="nav-link" href="/">
-                  Home
-                </a>
+                <NavLink to="/AdminDashboard">
+                  <a className="nav-link" href="/">
+                    Home
+                  </a>
+                </NavLink>
               </li>
 
               <NavDropdown title="Menu" id="basic-nav-dropdown">
-                <NavLink to="/AdminDashboard/Menu">
-                  <NavDropdown.Item href="#action/3.1">
-                    Add Menu
-                  </NavDropdown.Item>
-                </NavLink>
+                <NavDropdown.Item>
+                  <NavLink to="/AdminDashboard/Menu">Add Menu </NavLink>
+                </NavDropdown.Item>
+
                 <NavDropdown.Divider />
-                <NavLink to="/AdminDashboard/MenuList">
-                  <NavDropdown.Item href="#action/3.2">
-                    Menu List
-                  </NavDropdown.Item>
-                </NavLink>
+
+                <NavDropdown.Item>
+                  <NavLink to="/AdminDashboard/MenuList">Menu List </NavLink>
+                </NavDropdown.Item>
               </NavDropdown>
 
               <li className="nav-item">

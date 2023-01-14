@@ -44,9 +44,7 @@ const Menu = () => {
       <div className="container">
         <form onSubmit={SubmitHandler}>
           <div className="form-group">
-            <label className="mb-2" for="e">
-              Name of Item
-            </label>
+            <label className="mb-2">Name of Item</label>
             <input
               type="text"
               className="form-control mb-2"
@@ -59,9 +57,7 @@ const Menu = () => {
           </div>
 
           <div className="form-group">
-            <label className="mb-2" for="e">
-              Ingredients
-            </label>
+            <label className="mb-2">Ingredients</label>
             <input
               type="text"
               className="form-control mb-2"
@@ -74,9 +70,7 @@ const Menu = () => {
           </div>
 
           <div className="form-group">
-            <label className="mb-2" for="e">
-              Price
-            </label>
+            <label className="mb-2">Price</label>
             <input
               type="number"
               className="form-control mb-2"
@@ -89,7 +83,7 @@ const Menu = () => {
           </div>
 
           <div className="form-group">
-            <label for="e">Example file input</label> <br />
+            <label>Example file input</label> <br />
             <input
               type="file"
               className="form-control-file"

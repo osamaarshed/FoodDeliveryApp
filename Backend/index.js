@@ -89,6 +89,7 @@ app.post("/login", async (req, res) => {
     const token = jwt.sign({ user }, "Thisismywebsitesecretkey", {
       expiresIn: "300s",
     });
+    // res.json({ token: token });
 
     // if (user) {
     //   const token = jwt.sign(

@@ -37,6 +37,8 @@ const Signup = () => {
 
     if (response === "Registered Successfully!") {
       navigate("/login");
+    } else {
+      alert("Email Already Registered");
     }
   };
 
