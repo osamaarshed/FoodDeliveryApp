@@ -1,8 +1,15 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const Menu = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem("jwttoken")) {
+      navigate("/login");
+    }
+  }, []);
   const [input, setInput] = useState({
     itemname: "",
     ingredients: "",
@@ -19,6 +26,7 @@ const Menu = () => {
     setInput((values) => ({ ...values, [name]: value }));
   };
   const SubmitHandler = async (e) => {
+    const token = localStorage.getItem("jwttoken");
     const payload = {
       itemname: input.itemname,
       ingredients: input.ingredients,
@@ -27,7 +35,12 @@ const Menu = () => {
     };
     e.preventDefault();
     await axios
-      .post("http://localhost:8080/AdminDashboard/Menu", payload)
+      .post("http://localhost:8080/AdminDashboard/Menu", payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
       .then((res) => {
         console.log(res.data);
       })

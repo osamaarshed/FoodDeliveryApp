@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, Link } from "react-router-dom";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import axios from "axios";
 // import jwt from "jsonwebtoken"
 
@@ -9,6 +12,10 @@ const Login = () => {
     loginpassword: "",
   });
   const [response, setResponse] = useState("");
+  const [show, setShow] = useState(false);
+
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -26,10 +33,12 @@ const Login = () => {
       .then((res) => {
         setResponse(res.data);
         // console.log(res.data.user);
-        // console.log(res.data);
+        console.log(res.data);
         if (res.data.user) {
+          localStorage.setItem("jwttoken", res.data.token);
           alert("Login successful");
-          window.location.href = "/AdminDashboard";
+          // window.location.href = "/AdminDashboard";
+          navigate("/AdminDashboard");
         } else {
           alert("Login failed");
         }
@@ -39,15 +48,10 @@ const Login = () => {
       .catch((err) => {
         console.log(err);
       });
-
-    // console.log(response.user);
-
-    // let res = await axios.post("http://localhost:8080/login", payload);
-    // let data = res.data;
-    // console.log(input, "this is data");
-    // console.log(input.loginemail, "It is input.Login");
-    // console.log(input.loginpassword, "It is input.Passowrd");
   };
+  const handleClose = () => setShow(false);
+  const handleForgetPassword = () => setShow(true);
+
   return (
     <>
       <div className="container d-flex justify-content-center">
@@ -93,8 +97,38 @@ const Login = () => {
                   <label className="form-check-label">Remember Password</label>
                 </div>
                 <div className="col-6 mt-3">
-                  <a href="/">Forgot Password?</a>
+                  <Link className="notDisabled">
+                    <p onClick={handleForgetPassword}>Forgot Password?</p>
+                  </Link>
                 </div>
+
+                <Modal show={show} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Forgot Password?</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label>
+                        Enter your email to reset password:
+                      </Form.Label>
+                      <Form.Control
+                        type="email"
+                        placeholder="name@example.com"
+                      />
+                    </Form.Group>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                      Close
+                    </Button>
+                    <Button variant="primary" onClick={handleClose}>
+                      Save Changes
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               </div>
               <div className="text-center mt-3">
                 <NavLink to="/signup">

@@ -1,27 +1,33 @@
 import React, { useEffect, useState } from "react";
-// import { useSearchParams } from "react-router-dom";
 import Navbar from "../../Components/Navbar/Navbar";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import { useNavigate, Link } from "react-router-dom";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { AiTwotoneDelete } from "react-icons/ai";
 import axios from "axios";
 
 const MenuList = () => {
+  const navigate = useNavigate();
   const [menudata, setMenuData] = useState();
-  // const [searchParams, setSearchParams] = useSearchParams();
+  const [show, setShow] = useState(false);
   useEffect(() => {
-    // const id = searchParams.get("id");
+    if (!localStorage.getItem("jwttoken")) {
+      navigate("/login");
+    }
     fetchmenu();
-    // deleteMenu(id);
   }, []);
   const fetchmenu = () => {
     axios.get("http://localhost:8080/AdminDashboard/MenuList").then((res) => {
       setMenuData(res.data);
     });
   };
-  const deleteMenu = async (id, e) => {
-    // e.preventDefault();
-    // let params = setSearchParams.get(e.target);
-
+  const handleClose = () => setShow(false);
+  const editMenu = () => {
+    setShow(true);
+  };
+  const deleteMenu = async (id) => {
     await axios
       .delete(`http://localhost:8080/AdminDashboard/MenuList${id}`)
       .then((res) => {
@@ -56,12 +62,81 @@ const MenuList = () => {
                     <td>{item.price}</td>
                     <td>{item.inputfile}</td>
                     <td>
-                      <AiTwotoneEdit />
-                      <AiTwotoneDelete
-                        onClick={() => {
-                          deleteMenu(item._id);
-                        }}
-                      />
+                      <Link className="notDisabled text-white mx-2">
+                        <AiTwotoneEdit
+                          onClick={() => {
+                            editMenu();
+                          }}
+                        />
+                      </Link>
+                      <Link className="notDisabled text-white">
+                        <AiTwotoneDelete
+                          onClick={() => {
+                            deleteMenu(item._id);
+                          }}
+                        />
+                      </Link>
+
+                      {/* //Model */}
+                      <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                          <Modal.Title>Edit Menu</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
+                            <Form.Label>Item Name Reset:</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Item Name"
+                              value={item.itemname}
+                            />
+                          </Form.Group>
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
+                            <Form.Label>Ingredients Reset:</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Ingredients"
+                              value={item.ingredients}
+                            />
+                          </Form.Group>
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
+                            <Form.Label>Price:</Form.Label>
+                            <Form.Control
+                              type="number"
+                              placeholder="Price"
+                              value={item.price}
+                            />
+                          </Form.Group>
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
+                            <Form.Label>Picture:</Form.Label>
+                            <Form.Control
+                              type="file"
+                              placeholder="Picture"
+                              value={item.inputfile}
+                            />
+                          </Form.Group>
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button variant="secondary" onClick={handleClose}>
+                            Close
+                          </Button>
+                          <Button variant="primary" onClick={handleClose}>
+                            Save Changes
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
                     </td>
                   </tr>
                 );

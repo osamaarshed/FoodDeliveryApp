@@ -3,43 +3,21 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+// const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 // import model from "./Models/UserModel";
 mongoose.set("strictQuery", false);
+const Model = require("./Models/UserModel");
+const MenuModel = require("./Models/MenuModel");
+const auth = require("./Middlewares/Auth");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+// app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-//Schemas
-const User = new mongoose.Schema(
-  {
-    signupemail: { type: String, required: true, unique: true },
-    signuppassword: { type: String, required: true },
-    signupconfirmpassword: { type: String, required: true },
-    tokens: [{ token: { type: String, required: true } }],
-  },
-  {
-    collection: "user-credentials",
-  }
-);
-const Model = mongoose.model("UserCredentials", User);
-
-const Menu = new mongoose.Schema(
-  {
-    itemname: { type: String, required: true },
-    ingredients: { type: String, required: true },
-    price: { type: Number, default: 0, required: true },
-    inputfile: { type: String, required: true },
-  },
-  {
-    collection: "menu-crud",
-  }
-);
-const MenuModel = mongoose.model("MenuCrud", Menu);
 
 //Database Connection
 
@@ -60,9 +38,13 @@ app.post("/signup", async (req, res) => {
       signuppassword: newPassword,
       signupconfirmpassword: newConfirmPassword,
     });
-    res.status(200).send("Registered Successfully!");
+    res.send({
+      status: "ok",
+      statusCode: 200,
+      message: "Registered Successfully!",
+    });
   } catch (error) {
-    res.status(409).send({
+    res.send({
       status: "not ok",
       statusCode: 400,
       message: "Duplicate Email!",
@@ -86,19 +68,13 @@ app.post("/login", async (req, res) => {
       user.signuppassword
     );
 
-    const token = jwt.sign({ user }, "Thisismywebsitesecretkey", {
-      expiresIn: "300s",
-    });
-    // res.json({ token: token });
+    const token = await user.generateAuthToken();
+    // res.cookie("jwttoken", token, {
+    //   expires: new Date(Date.now() + 250000000),
+    //   httpOnly: true,
+    // });
+    // localStorage.setItem("jwttoken", token);
 
-    // if (user) {
-    //   const token = jwt.sign(
-    //     {
-    //       signupemail: req.body.loginemail,
-    //       signuppassword: req.body.loginpassword,
-    //     },
-    //     "secret123"
-    //   );
     if (isPasswordValid) {
       res.status(200).send({
         status: "ok",
@@ -115,11 +91,9 @@ app.post("/login", async (req, res) => {
   // res.send("asd");
 });
 
-app.post("/AdminDashboard", verifyToken, (req, res) => {});
-
 //MENU CRUD
 
-app.post("/AdminDashboard/Menu", async (req, res) => {
+app.post("/AdminDashboard/Menu", auth, async (req, res) => {
   try {
     await MenuModel.create({
       itemname: req.body.itemname,
@@ -163,7 +137,7 @@ app.delete("/AdminDashboard/MenuList:_id", async (req, res) => {
   }
 });
 
-function verifyToken(req, res, next) {}
+// function verifyToken(req, res, next) {}
 app.listen(8080, () => {
   console.log("The server is running on port 8080");
 });

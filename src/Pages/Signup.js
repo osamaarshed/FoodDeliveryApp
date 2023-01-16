@@ -28,18 +28,18 @@ const Signup = () => {
     await axios
       .post("http://localhost:8080/signup", payload)
       .then((res) => {
-        console.log(res.data);
         setResponse(res.data);
+        console.log(res.data);
+        if (res.data.status === "ok") {
+          navigate("/login");
+          alert("User Created Successfully");
+        } else {
+          alert("Email Already Registered");
+        }
       })
       .catch((err) => {
         console.log(err);
       });
-
-    if (response === "Registered Successfully!") {
-      navigate("/login");
-    } else {
-      alert("Email Already Registered");
-    }
   };
 
   return (
