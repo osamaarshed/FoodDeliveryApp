@@ -25,20 +25,28 @@ const Menu = () => {
 
     setInput((values) => ({ ...values, [name]: value }));
   };
+  const ChangeHandlerImage = (e) => {
+    const name = e.target.name;
+    const value = e.target.files[0];
+    console.log(name, value);
+    setInput((values) => ({ ...values, [name]: value }));
+    console.log(input);
+  };
   const SubmitHandler = async (e) => {
+    // console.log(input);
     const token = localStorage.getItem("jwttoken");
-    const payload = {
-      itemname: input.itemname,
-      ingredients: input.ingredients,
-      price: input.price,
-      inputfile: input.inputfile,
-    };
+    const formdata = new FormData();
+    formdata.append("inputfile", input.inputfile, input.inputfile.name);
+    formdata.append("itemname", input.itemname);
+    formdata.append("ingredients", input.ingredients);
+    formdata.append("price", input.price);
+
     e.preventDefault();
     await axios
-      .post("http://localhost:8080/AdminDashboard/Menu", payload, {
+      .post("http://localhost:8080/AdminDashboard/Menu", formdata, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
@@ -102,8 +110,8 @@ const Menu = () => {
               className="form-control-file"
               id="exampleFormControlFile1"
               name="inputfile"
-              value={input.inputfile}
-              onChange={ChangeHandler}
+              // value={input.inputfile}
+              onChange={ChangeHandlerImage}
             />
           </div>
 

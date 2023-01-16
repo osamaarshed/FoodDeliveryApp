@@ -3,22 +3,29 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-// const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-// import model from "./Models/UserModel";
 mongoose.set("strictQuery", false);
 const Model = require("./Models/UserModel");
 const MenuModel = require("./Models/MenuModel");
 const auth = require("./Middlewares/Auth");
+const multer = require("multer");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-// app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/images");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Math.random().toString().slice(2, 6) + "_" + file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 //Database Connection
 
 mongoose.connect("mongodb://localhost:27017/food-delivery-app");
@@ -93,24 +100,29 @@ app.post("/login", async (req, res) => {
 
 //MENU CRUD
 
-app.post("/AdminDashboard/Menu", auth, async (req, res) => {
-  try {
-    await MenuModel.create({
-      itemname: req.body.itemname,
-      ingredients: req.body.ingredients,
-      price: req.body.price,
-      inputfile: req.body.inputfile,
-    });
-    res.status(200).send("Success");
-  } catch (error) {
-    res.status(409).send({
-      status: "not ok",
-      statusCode: 400,
-      message: "Not Added",
-    });
-    console.log(error);
+app.post(
+  "/AdminDashboard/Menu",
+  upload.single("inputfile"),
+  auth,
+  async (req, res) => {
+    try {
+      await MenuModel.create({
+        itemname: req.body.itemname,
+        ingredients: req.body.ingredients,
+        price: req.body.price,
+        inputfile: req.file ? req.file.filename : null,
+      });
+      res.status(200).send("Success");
+    } catch (error) {
+      res.status(409).send({
+        status: "not ok",
+        statusCode: 400,
+        message: "Not Added",
+      });
+      console.log(error);
+    }
   }
-});
+);
 
 // Get Menu List
 
