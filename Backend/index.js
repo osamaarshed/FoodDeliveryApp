@@ -12,6 +12,7 @@ const auth = require("./Middlewares/Auth");
 const multer = require("multer");
 
 const app = express();
+app.use("/public", express.static("public"));
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));

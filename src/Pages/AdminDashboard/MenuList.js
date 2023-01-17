@@ -3,6 +3,7 @@ import Navbar from "../../Components/Navbar/Navbar";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import "./../../Css/MenuList.css";
 import { useNavigate, Link } from "react-router-dom";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { AiTwotoneDelete } from "react-icons/ai";
@@ -60,7 +61,16 @@ const MenuList = () => {
                     <td>{item.itemname}</td>
                     <td>{item.ingredients}</td>
                     <td>{item.price}</td>
-                    <td>{item.inputfile}</td>
+                    {/* <td>{item.inputfile}</td> */}
+                    <td>
+                      <div>
+                        <img
+                          className="img-fluid menulist-img"
+                          src={`http://localhost:8080/public/images/${item.inputfile}`}
+                          alt="menuimg"
+                        />
+                      </div>
+                    </td>
                     <td>
                       <Link className="notDisabled text-white mx-2">
                         <AiTwotoneEdit
