@@ -101,6 +101,7 @@ app.post("/login", async (req, res) => {
 
 //MENU CRUD
 
+//Add Menu
 app.post(
   "/AdminDashboard/Menu",
   upload.single("inputfile"),
@@ -113,7 +114,10 @@ app.post(
         price: req.body.price,
         inputfile: req.file ? req.file.filename : null,
       });
-      res.status(200).send("Success");
+      res.status(200).send({
+        status: "ok",
+        message: "Successfully Added",
+      });
     } catch (error) {
       res.status(409).send({
         status: "not ok",
@@ -142,7 +146,7 @@ app.get("/AdminDashboard/MenuList", async (req, res) => {
 app.delete("/AdminDashboard/MenuList:_id", async (req, res) => {
   try {
     const menu = await MenuModel.deleteOne(req.params);
-    res.status(200).send(menu);
+    res.status(200).send({ status: "Deleted Successfully!" });
   } catch (error) {
     res.status(409).send({
       status: "not deleted",

@@ -50,6 +50,7 @@ const Menu = () => {
         },
       })
       .then((res) => {
+        alert(res.data.message);
         console.log(res.data);
       })
       .catch((err) => {

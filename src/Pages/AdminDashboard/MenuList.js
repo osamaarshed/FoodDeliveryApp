@@ -32,6 +32,7 @@ const MenuList = () => {
     await axios
       .delete(`http://localhost:8080/AdminDashboard/MenuList${id}`)
       .then((res) => {
+        alert(res.data.status);
         console.log(res.data);
       });
   };
@@ -42,7 +43,7 @@ const MenuList = () => {
       <div className="container text-center">
         <h2 className="mt-5">MenuList</h2>
         <div className="mt-5">
-          <table className="table table-dark">
+          <table className="table table-dark ">
             <thead>
               <tr>
                 <th scope="col">#</th>
