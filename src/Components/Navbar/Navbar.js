@@ -95,6 +95,13 @@ const Navbar = () => {
                     </NavLink>
                   </li>
                   <li className="nav-item">
+                    <NavLink to="/AdminDashboard/ContactMessages">
+                      <a className="nav-link" href="/">
+                        Messages
+                      </a>
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
                     <NavLink to="/login" onClick={logout}>
                       <a className="nav-link" href="/">
                         Logout

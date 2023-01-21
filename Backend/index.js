@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 mongoose.set("strictQuery", false);
 const Model = require("./Models/UserModel");
+const ContactModel = require("./Models/ContactUs");
 const MenuModel = require("./Models/MenuModel");
 const auth = require("./Middlewares/Auth");
 const multer = require("multer");
@@ -141,6 +142,18 @@ app.get("/AdminDashboard/MenuList", async (req, res) => {
     });
   }
 });
+// get MenuList with parameters
+app.get("/AdminDashboard/MenuList:_id", async (req, res) => {
+  try {
+    const menu = await MenuModel.findOne(req.params);
+    res.status(200).send(menu);
+    // console.log(menu);
+  } catch (error) {
+    res.status(409).send({
+      status: "not shown",
+    });
+  }
+});
 
 // Delete MenuList
 app.delete("/AdminDashboard/MenuList:_id", async (req, res) => {
@@ -151,6 +164,32 @@ app.delete("/AdminDashboard/MenuList:_id", async (req, res) => {
     res.status(409).send({
       status: "not deleted",
     });
+  }
+});
+
+// ContactUs Post
+app.post("/contact", async (req, res) => {
+  try {
+    await ContactModel.create({
+      name: req.body.name,
+      subject: req.body.subject,
+      message: req.body.message,
+    });
+    res
+      .status(200)
+      .send({ status: "ok", message: "Successfully Sent Message" });
+  } catch (error) {
+    res.status(409).send({ status: "error", message: error });
+  }
+});
+
+// ContactUs Get
+app.get("/contactmessages", async (req, res) => {
+  try {
+    const contact = await ContactModel.find({});
+    res.status(200).send(contact);
+  } catch (error) {
+    res.status(409).send({ status: "not ok", message: error });
   }
 });
 

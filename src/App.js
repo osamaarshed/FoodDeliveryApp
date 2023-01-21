@@ -7,6 +7,7 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import Menu from "./Pages/AdminDashboard/Menu";
 import MenuList from "./Pages/AdminDashboard/MenuList";
 import MyOrders from "./Pages/AdminDashboard/MyOrders";
+import ContactMessages from "./Pages/AdminDashboard/ContactMessages";
 
 function App() {
   return (
@@ -20,6 +21,10 @@ function App() {
           <Route path="/AdminDashboard/Menu" element={<Menu />} />
           <Route path="/AdminDashboard/MenuList" element={<MenuList />} />
           <Route path="/AdminDashboard/MyOrders" element={<MyOrders />} />
+          <Route
+            path="/AdminDashboard/ContactMessages"
+            element={<ContactMessages />}
+          />
         </Routes>
       </BrowserRouter>
       {/* <Home /> */}
