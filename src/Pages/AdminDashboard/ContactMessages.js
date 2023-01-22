@@ -15,7 +15,7 @@ const ContactMessages = () => {
   }, []);
   const fetchMessages = () => {
     axios
-      .get("http://localhost:8080/contactmessages")
+      .get("http://localhost:8080/AdminDashboard/Contact")
       .then((res) => {
         setData(res.data);
       })
