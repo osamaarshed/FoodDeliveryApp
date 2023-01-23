@@ -12,6 +12,8 @@ const signupRoute = require("./Routes/AdminSide/Signup");
 const adminDashboardRoute = require("./Routes/AdminSide/AdminDashboard");
 const contactRoute = require("./Routes/UserSide/Contact");
 const orderRoute = require("./Routes/UserSide/Order");
+const userPanellogin = require("./Routes/UserSide/UserLogin.js");
+const userPanelSignup = require("./Routes/UserSide/UserSignup.js");
 
 const app = express();
 app.use("/public", express.static("public"));
@@ -28,7 +30,9 @@ app.use("/signup", signupRoute);
 app.use("/login", loginRoute);
 app.use("/AdminDashboard", adminDashboardRoute, auth);
 app.use("/contact", contactRoute);
-app.use("orders", orderRoute);
+app.use("/orders", orderRoute);
+app.use("/userlogin", userPanellogin);
+app.use("/usersignup", userPanelSignup);
 
 app.listen(8080, () => {
   console.log("The server is running on port 8080");

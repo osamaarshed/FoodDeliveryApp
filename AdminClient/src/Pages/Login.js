@@ -32,18 +32,14 @@ const Login = () => {
       .post("http://localhost:8080/login", payload)
       .then((res) => {
         setResponse(res.data);
-        // console.log(res.data.user);
         console.log(res.data);
         if (res.data.user) {
           localStorage.setItem("jwttoken", res.data.token);
           alert("Login successful");
-          // window.location.href = "/AdminDashboard";
           navigate("/AdminDashboard");
         } else {
           alert("Login failed");
         }
-
-        // console.log(response.status);
       })
       .catch((err) => {
         console.log(err);
